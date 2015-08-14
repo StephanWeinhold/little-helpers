@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Filter table</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style type="text/css">
+        tr {
+            display: none;
+        }
+        tr.show {
+            display: table-row;
+        }
+        tr#table-headline {
+            display: table-row !important;
+        }
+    </style>
+</head>
+<body onload="pageLoaded()">
+    <div class="wrap">
+        <main role="main">
+            <div id="filter-container">
+                <input id="filter" type="text">
+            </div>
+
+            <table>
+                <thead>
+                <tr id="table-headline">
+                    <th>Your</th>
+                    <th>headlines</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="show">
+                    <td>Your</td>
+                    <td>content</td>
+                </tr>
+                </tbody>
+            </table>
+        </main>
+    </div>
+
+    <script type="text/javascript">
+        function pageLoaded() {
+            var filterInput = document.getElementById('filter');
+            // Set the cursor into the filter-<input>
+            filterInput.focus();
+            filterInput.select();
+            // Call filtering method on every keyup
+            filterInput.onkeyup = function() {
+                filterTable(filterInput.value);
+            }
+            // Filter the table for a given search-string
+            function filterTable(value) {
+                var rows = document.getElementsByTagName('tr'),
+                    rowsLength = rows.length;
+                if (value == '') {
+                    for (var i = 0; i < rowsLength; ++i) {
+                        rows[i].className = 'show';
+                    }
+                } else {
+                    for (var i = 0; i < rowsLength; ++i) {
+                        rows[i].className = '';
+                        var tds = rows[i].getElementsByTagName('td'),
+                            tdsLength = tds.length;
+                        for (var tdsCounter = 0; tdsCounter < tdsLength; ++tdsCounter) {
+                            if (tds[tdsCounter].innerText.indexOf(value) > -1) {
+                                tds[tdsCounter].parentNode.className = 'show';
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+</html>
